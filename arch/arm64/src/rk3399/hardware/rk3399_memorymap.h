@@ -48,7 +48,25 @@
 #define RK3399_UART4_ADDR      0xff370000
 
 #define RK3399_GRF_ADDR             0xff770000
+
+#define GRF_GPIO2A_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e000)
+#define GRF_GPIO2B_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e004)
+#define GRF_GPIO2C_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e008)
+#define GRF_GPIO2D_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e00c)
+
+#define GRF_GPIO3A_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e010)
+#define GRF_GPIO3B_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e014)
+#define GRF_GPIO3C_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e018)
+#define GRF_GPIO3D_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e01c)
+
 #define GRF_GPIO4A_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e020)
+#define GRF_GPIO4B_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e024)
+#define GRF_GPIO4C_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e028)
+#define GRF_GPIO4D_IOMUX_ADDR                   (RK3399_GRF_ADDR + 0x0e02c)
+
+/* make the upper 16 bit mask for a value starting at the specified maskshift position*/
+#define RK_HIWORD_UPDATE(val, mask, maskshift) \
+		((val) << (maskshift) | (mask) << ((maskshift) + 16))
 /****************************************************************************
  * Public Types
  ****************************************************************************/

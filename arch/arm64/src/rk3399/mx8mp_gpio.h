@@ -149,7 +149,11 @@
 /* The smallest integer type that can hold the GPIO encoding */
 
 typedef uint32_t gpio_pinset_t;
-
+typedef enum
+{
+    GPIO_DIR_INPUT  = 0,
+    GPIO_DIR_OUTPUT = 1
+} gpio_dir_t;
 /****************************************************************************
  * Public Data
  ****************************************************************************/

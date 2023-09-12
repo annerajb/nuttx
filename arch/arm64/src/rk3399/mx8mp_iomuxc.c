@@ -65,9 +65,8 @@ void mx8mp_iomuxc_config(uint32_t mux_register,
                          uint32_t sion,
                          uint32_t config)
 {
-  putreg32(IOMUXC_SW_MUX_CTL_PAD_MUX_MODE(mux_mode) |
-           IOMUXC_SW_MUX_CTL_PAD_SION(sion),
-           mux_register);
+  
+  putreg32(mux_mode, mux_register);
 
   // if (input_register)
   //   {

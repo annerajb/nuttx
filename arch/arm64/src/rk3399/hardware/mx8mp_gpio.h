@@ -80,6 +80,26 @@
 #define ICR_RISING_EDGE           2          /* Interrupt is rising-edge sensitive */
 #define ICR_FALLING_EDGE          3          /* Interrupt is falling-edge sensitive */
 
+/* General Purpose Input/Output (GPIO) */
+
+typedef struct
+{
+    uint32_t swporta_dr;            /* 0x00 */
+    uint32_t swporta_ddr;           /* 0x04 */
+    uint32_t swporta_ctl;           /* 0x08 */
+    uint32_t reserved8[9];               /* 0x18-0x2c portC&D */
+    uint32_t inten;                 /* 0x30 */
+    uint32_t intmask;               /* 0x34 */
+    uint32_t inttype_level;         /* 0x38 */
+    uint32_t int_polarity;          /* 0x3c */
+    uint32_t int_status;            /* 0x40 */
+    uint32_t raw_instatus;          /* 0x44 */
+    uint32_t debounce;              /* 0x48 */
+    uint32_t porta_eoi;             /* 0x4c */
+    uint32_t ext_porta;             /* 0x50 */
+    uint32_t reserved9[3];               /* 0x58 0x5c */
+    uint32_t ls_sync;               /* 0x60 */
+} AP_GPIO_TypeDef;
 #define ICR_SHIFT(n)              (((n) & 15) << 1)
 #define ICR_MASK(n)               (3 << ICR_SHIFT(n))
 #define ICR(i,n)                  ((uint32_t)(i) << ICR_SHIFT(n))

@@ -354,6 +354,62 @@ void mx8mp_gpio_write(gpio_pinset_t pinset, bool value)
   leave_critical_section(flags);
 }
 
+int hal_gpio_pin_init(AP_GPIO_TypeDef* AP_GPIO,uint32_t pin, gpio_dir_t type)
+{
+  // if ((type == GPIO_INPUT) &&
+  //       (m_gpioCtx.pin_assignments[pin] == GPIO_PIN_ASSI_OUT))
+  //   {
+  //     return false;
+  //   }
+
+  // hal_gpio_fmux(pin, Bit_DISABLE);
+
+  // if ((pin == P2) || (pin == P3))
+  //   {
+  //     hal_gpio_pin2pin3_control(pin, 1);
+  //   }
+
+  // hal_gpio_cfg_analog_io(pin, Bit_DISABLE);
+
+  if (type == GPIO_OUTPUT)
+    {
+      AP_GPIO->swporta_ddr |= BIT(pin);
+
+      /* m_gpioCtx.pin_assignments[pin] = GPIO_PIN_ASSI_OUT; */
+    }
+  else
+    {
+      AP_GPIO->swporta_ddr &= ~BIT(pin);
+      //m_gpioCtx.pin_assignments[pin] = GPIO_PIN_ASSI_IN;
+    }
+
+  return true;
+}
+void hal_gpio_write(AP_GPIO_TypeDef* AP_GPIO,uint32_t pin, uint8_t en)
+{
+
+  if (en)
+    {
+      AP_GPIO->swporta_dr |= BIT(pin);
+    }
+  else
+    {
+      AP_GPIO->swporta_dr &= ~BIT(pin);
+    }
+
+  hal_gpio_pin_init(AP_GPIO,pin, GPIO_DIR_OUTPUT);
+}
+void hal_gpio_fast_write(AP_GPIO_TypeDef* AP_GPIO,uint32_t pin, uint8_t en)
+{
+  if (en)
+    {
+      AP_GPIO->swporta_dr |= BIT(pin);
+    }
+  else
+    {
+      AP_GPIO->swporta_dr &= ~BIT(pin);
+    }
+}
 /****************************************************************************
  * Name: mx8mp_gpio_read
  *
@@ -361,27 +417,57 @@ void mx8mp_gpio_write(gpio_pinset_t pinset, bool value)
  *   Read one or zero from the selected GPIO pin
  *
  ****************************************************************************/
+bool hal_gpio_read(AP_GPIO_TypeDef* AP_GPIO, uint32_t pin)
+{
+  uint32_t r;
+
+  if (AP_GPIO->swporta_ddr & BIT(pin))
+    {
+      r = AP_GPIO->swporta_dr;
+    }
+  else
+    {
+      r = AP_GPIO->ext_porta;
+    }
+
+  return (int)((r >> pin) & 1);
+}
+typedef struct 
+{
+  AP_GPIO_TypeDef* bankAddr;
+   
+}rk_gpio_bank;
+static rk_gpio_bank m_gpiobanks[5] = {
+  {
+    .bankAddr = (AP_GPIO_TypeDef*)RK3399_GPIO0_ADDR
+  },
+  {
+    .bankAddr = (AP_GPIO_TypeDef*)RK3399_GPIO1_ADDR
+  },
+  {
+    .bankAddr = (AP_GPIO_TypeDef*)RK3399_GPIO2_ADDR
+  },
+  {
+    .bankAddr = (AP_GPIO_TypeDef*)RK3399_GPIO3_ADDR
+  },
+  {
+    .bankAddr = (AP_GPIO_TypeDef*)RK3399_GPIO4_ADDR
+  }
+};
 
 bool mx8mp_gpio_read(gpio_pinset_t pinset)
 {
   uint32_t port = (pinset & GPIO_PORT_MASK) >> GPIO_PORT_SHIFT;
+  //todo add assert for port
   uint32_t pin  = (pinset & GPIO_PIN_MASK) >> GPIO_PIN_SHIFT;
-  uint32_t regval;
+  uint32_t r;
   irqstate_t flags;
 
   flags = enter_critical_section();
-
-  if ((pinset & (GPIO_OUTPUT)) == (GPIO_OUTPUT))
-    {
-      regval = getreg32(GPIO_PSR(port));
-    }
-  else
-    {
-      regval = getreg32(GPIO_DR(port));
-    }
+  r = hal_gpio_read(m_gpiobanks[port].bankAddr,pin);
 
   leave_critical_section(flags);
-  return ((regval & GPIO_PIN(pin)) != 0);
+  return r;
 }
 
 /****************************************************************************
