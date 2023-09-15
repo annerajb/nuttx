@@ -1,5 +1,5 @@
 /****************************************************************************
- * arch/arm/src/mx8mp/mx8mp_gpio.h
+ * arch/arm/src/rk3399/rk3399_gpio.h
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,8 +18,8 @@
  *
  ****************************************************************************/
 
-#ifndef __ARCH_ARM_SRC_MX8MP_MX8MP_GPIO_H
-#define __ARCH_ARM_SRC_MX8MP_MX8MP_GPIO_H
+#ifndef __ARCH_ARM_SRC_RK3399_RK3399_GPIO_H
+#define __ARCH_ARM_SRC_RK3399_RK3399_GPIO_H
 
 /****************************************************************************
  * Included Files
@@ -31,7 +31,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "hardware/mx8mp_gpio.h"
+#include "hardware/rk3399_gpio.h"
 
 /****************************************************************************
  * Pre-processor Definitions
@@ -145,15 +145,13 @@
 /****************************************************************************
  * Public Types
  ****************************************************************************/
-
-/* The smallest integer type that can hold the GPIO encoding */
-
-typedef uint32_t gpio_pinset_t;
 typedef enum
 {
     GPIO_DIR_INPUT  = 0,
     GPIO_DIR_OUTPUT = 1
 } gpio_dir_t;
+typedef uint32_t gpio_pinset_t;
+
 /****************************************************************************
  * Public Data
  ****************************************************************************/
@@ -177,15 +175,28 @@ extern "C"
  * Description:
  *   Configure a GPIO pin based on bit-encoded description of the pin.
  *
+ * Input Parameters:
+ *   cfgset - Bit-encoded description of a pin
+ *
+ * Returned Value:
+ *   Zero (OK) on success; a negated errno value is returned on any failure.
+ *
  ****************************************************************************/
 
-int mx8mp_gpio_config(gpio_pinset_t pinset);
+int mx8mp_gpio_config(gpio_pinset_t cfgset);
 
 /****************************************************************************
  * Name: mx8mp_gpio_write
  *
  * Description:
- *   Write one or zero to the selected GPIO pin
+ *   Write one or zero to the selected GPIO pin.
+ *
+ * Input Parameters:
+ *   pinset - GPIO pin
+ *   value - true or false for bit value
+ *
+ * Returned Value:
+ *   None
  *
  ****************************************************************************/
 
@@ -193,9 +204,15 @@ void mx8mp_gpio_write(gpio_pinset_t pinset, bool value);
 
 /****************************************************************************
  * Name: mx8mp_gpio_read
- *
+ * 
  * Description:
  *   Read one or zero from the selected GPIO pin
+ *
+ * Input Parameters:
+ *   pinset - GPIO pin
+ *
+ * Returned Value:
+ *   Input value of GPIO pin
  *
  ****************************************************************************/
 
@@ -246,4 +263,4 @@ bool mx8mp_gpio_read(gpio_pinset_t pinset);
 #if defined(__cplusplus)
 }
 #endif
-#endif /* __ARCH_ARM_SRC_MX8MP_MX8MP_GPIO_H */
+#endif /* __ARCH_ARM_SRC_RK3399_RK3399_GPIO_H */

@@ -1,5 +1,5 @@
 /****************************************************************************
- * arch/arm/src/mx8mp/mx8mp_iomuxc.c
+ * arch/arm/src/rk3399/rk3399_iomuxc.c
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -29,52 +29,34 @@
 #include <errno.h>
 
 #include "arm64_internal.h"
-#include "mx8mp_iomuxc.h"
-
-/* MUX_MODE - MUX Mode Select Field. */
-
-#define IOMUXC_SW_MUX_CTL_PAD_MUX_MODE_MASK      (0x7U)
-#define IOMUXC_SW_MUX_CTL_PAD_MUX_MODE_SHIFT     (0U)
-#define IOMUXC_SW_MUX_CTL_PAD_MUX_MODE(x)        (((uint32_t)(((uint32_t)(x)) << IOMUXC_SW_MUX_CTL_PAD_MUX_MODE_SHIFT)) & IOMUXC_SW_MUX_CTL_PAD_MUX_MODE_MASK)
-
-/* SION - Software Input On Field. */
-
-#define IOMUXC_SW_MUX_CTL_PAD_SION_MASK          (0x10U)
-#define IOMUXC_SW_MUX_CTL_PAD_SION_SHIFT         (4U)
-#define IOMUXC_SW_MUX_CTL_PAD_SION(x)            (((uint32_t)(((uint32_t)(x)) << IOMUXC_SW_MUX_CTL_PAD_SION_SHIFT)) & IOMUXC_SW_MUX_CTL_PAD_SION_MASK)
-
-/* DAISY - Selecting Pads Involved in Daisy Chain. */
-
-#define IOMUXC_SELECT_INPUT_DAISY_MASK           (0xFU)
-#define IOMUXC_SELECT_INPUT_DAISY_SHIFT          (0U)
-#define IOMUXC_SELECT_INPUT_DAISY(x)             (((uint32_t)(((uint32_t)(x)) << IOMUXC_SELECT_INPUT_DAISY_SHIFT)) & IOMUXC_SELECT_INPUT_DAISY_MASK)
+#include "rk3399_iomuxc.h"
 
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
 
 /****************************************************************************
- * Name: mx8mp_iomuxc_config
+ * Name: rk3399_iomuxc_config
  ****************************************************************************/
 
-void mx8mp_iomuxc_config(uint32_t mux_register,
+void rk3399_iomuxc_config(uint32_t mux_register,
                          uint32_t mux_mode,
-                         uint32_t input_register,
-                         uint32_t input_daisy,
-                         uint32_t config_register,
-                         uint32_t sion,
                          uint32_t config)
 {
   
   putreg32(mux_mode, mux_register);
 
-  // if (input_register)
-  //   {
-  //     putreg32(IOMUXC_SELECT_INPUT_DAISY(input_daisy), input_register);
-  //   }
+  /*config contains:
+   pull up / pull down 
+   slew rate
+   open drain
+   input select (cmos vs schmitt) not sure if it even applies.
+   + pull up enable and disable
+*/
 
-  // if (config_register)
-  //   {
-  //     putreg32(config, config_register);
-  //   }
+/*  if (config_register)
+    {
+      putreg32(config, config_register);
+    }
+  */
 }

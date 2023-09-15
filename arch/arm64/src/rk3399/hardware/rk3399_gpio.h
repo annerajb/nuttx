@@ -1,5 +1,5 @@
 /****************************************************************************
- * arch/arm/src/mx8mp/hardware/mx8mp_gpio.h
+ * arch/arm/src/rk3399/hardware/rk3399_gpio.h
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,11 +20,11 @@
 
 /* Reference:
  *   "i.MX 8M Plus Applications Processor Reference Manual",
- *   Document Number: IMX8MPRM Rev. 1, 06/2021. NXP
+ *   Document Number: RK3399RM Rev. 1, 06/2021. NXP
  */
 
-#ifndef __ARCH_ARM_SRC_MX8MP_HARDWARE_MX8MP_GPIO_H
-#define __ARCH_ARM_SRC_MX8MP_HARDWARE_MX8MP_GPIO_H
+#ifndef __ARCH_ARM_SRC_RK3399_HARDWARE_RK3399_GPIO_H
+#define __ARCH_ARM_SRC_RK3399_HARDWARE_RK3399_GPIO_H
 
 /****************************************************************************
  * Included Files
@@ -104,4 +104,4 @@ typedef struct
 #define ICR_MASK(n)               (3 << ICR_SHIFT(n))
 #define ICR(i,n)                  ((uint32_t)(i) << ICR_SHIFT(n))
 
-#endif /* __ARCH_ARM_SRC_MX8MP_HARDWARE_MX8MP_GPIO_H */
+#endif /* __ARCH_ARM_SRC_RK3399_HARDWARE_RK3399_GPIO_H */

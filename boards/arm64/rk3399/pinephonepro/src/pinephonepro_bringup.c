@@ -28,6 +28,9 @@
 #include <syslog.h>
 #include "pinephonepro.h"
 
+#include "arm64_arch.h"
+#include "rk3399_iomuxc.h"
+#include "hardware/rk3399_pinmux.h"
 #ifdef CONFIG_FS_PROCFS
 #  include <nuttx/fs/fs.h>
 #endif
@@ -44,10 +47,13 @@
  *
  ****************************************************************************/
 
+#define IOMUX_LED         IOMUXC_GRF_GPIO4D_IO00_GPIO, GPIO_PAD_CTRL
+
 int pinephonepro_bringup(void)
 {
   int ret = OK;
 
+  rk3399_iomuxc_config(IOMUX_LED);
 #ifdef CONFIG_FS_PROCFS
   /* Mount the procfs file system */
 

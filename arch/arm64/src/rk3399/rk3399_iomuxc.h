@@ -1,5 +1,5 @@
 /****************************************************************************
- * arch/arm/src/mx8mp/mx8mp_iomuxc.h
+ * arch/arm/src/rk3399/rk3399_iomuxc.h
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,8 +18,8 @@
  *
  ****************************************************************************/
 
-#ifndef __ARCH_ARM_SRC_MX8MP_MX8MP_IOMUXC_H
-#define __ARCH_ARM_SRC_MX8MP_MX8MP_IOMUXC_H
+#ifndef __ARCH_ARM_SRC_RK3399_RK3399_IOMUXC_H
+#define __ARCH_ARM_SRC_RK3399_RK3399_IOMUXC_H
 
 /****************************************************************************
  * Included Files
@@ -27,27 +27,26 @@
 
 #include <nuttx/config.h>
 #include <stdint.h>
-#include "hardware/mx8mp_pinmux.h"
+#include "hardware/rk3399_pinmux.h"
 
 /****************************************************************************
  * Public Function Prototypes
  ****************************************************************************/
 
 /****************************************************************************
- * Name: mx8mp_iomuxc_set_pin_config
+ * Name: rk3399_iomuxc_set_pin_config
  *
  * Description:
  *   Congigure the IOMUXC pin configuration.
- *   The first five parameters can be filled with the pin function ID macros.
- *
+ *   First param is address
+ *   second is the mask and value to put into the register (no read then set)
+ *   third is config if pull up or pulldowns are configured
  ****************************************************************************/
 
-void mx8mp_iomuxc_config(uint32_t mux_register,
+
+
+void rk3399_iomuxc_config(uint32_t mux_register,
                          uint32_t mux_mode,
-                         uint32_t input_register,
-                         uint32_t input_daisy,
-                         uint32_t config_register,
-                         uint32_t sion,
                          uint32_t config);
 
-#endif /* __ARCH_ARM_SRC_MX8MP_MX8MP_IOMUXC_H */
+#endif /* __ARCH_ARM_SRC_RK3399_RK3399_IOMUXC_H */
