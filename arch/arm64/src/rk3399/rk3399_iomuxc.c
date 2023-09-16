@@ -1,5 +1,5 @@
 /****************************************************************************
- * boards/arm64/rk3399/pinephonepro/src/pinephonepro_bringup.c
+ * arch/arm/src/rk3399/rk3399_iomuxc.c
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -23,47 +23,40 @@
  ****************************************************************************/
 
 #include <nuttx/config.h>
-#include <nuttx/kmalloc.h>
-#include <sys/types.h>
-#include <syslog.h>
-#include "pinephonepro.h"
 
-#include "arm64_arch.h"
+#include <sys/types.h>
+#include <assert.h>
+#include <errno.h>
+
+#include "arm64_internal.h"
 #include "rk3399_iomuxc.h"
-#include "hardware/rk3399_pinmux.h"
-#ifdef CONFIG_FS_PROCFS
-#  include <nuttx/fs/fs.h>
-#endif
 
 /****************************************************************************
  * Public Functions
  ****************************************************************************/
 
 /****************************************************************************
- * Name: pinephonepro_bringup
- *
- * Description:
- *   Bring up board features
- *
+ * Name: rk3399_iomuxc_config
  ****************************************************************************/
 
-#define IOMUX_LED         IOMUXC_GRF_GPIO4D_IO00_GPIO, GPIO_PAD_CTRL
-
-int pinephonepro_bringup(void)
+void rk3399_iomuxc_config(uint32_t mux_register,
+                         uint32_t mux_mode,
+                         uint32_t config)
 {
-  int ret = OK;
+  
+  putreg32(mux_mode, mux_register);
 
-  rk3399_iomuxc_config(IOMUX_LED);
-#ifdef CONFIG_FS_PROCFS
-  /* Mount the procfs file system */
+  /*config contains:
+   pull up / pull down 
+   slew rate
+   open drain
+   input select (cmos vs schmitt) not sure if it even applies.
+   + pull up enable and disable
+*/
 
-  ret = nx_mount(NULL, "/proc", "procfs", 0, NULL);
-  if (ret < 0)
+/*  if (config_register)
     {
-      syslog(LOG_ERR, "ERROR: Failed to mount procfs at /proc: %d\n", ret);
+      putreg32(config, config_register);
     }
-#endif
-
-  UNUSED(ret);
-  return OK;
+  */
 }

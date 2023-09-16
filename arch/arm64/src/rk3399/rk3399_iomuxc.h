@@ -1,5 +1,5 @@
 /****************************************************************************
- * boards/arm64/rk3399/pinephonepro/src/pinephonepro_bringup.c
+ * arch/arm/src/rk3399/rk3399_iomuxc.h
  *
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,52 +18,35 @@
  *
  ****************************************************************************/
 
+#ifndef __ARCH_ARM_SRC_RK3399_RK3399_IOMUXC_H
+#define __ARCH_ARM_SRC_RK3399_RK3399_IOMUXC_H
+
 /****************************************************************************
  * Included Files
  ****************************************************************************/
 
 #include <nuttx/config.h>
-#include <nuttx/kmalloc.h>
-#include <sys/types.h>
-#include <syslog.h>
-#include "pinephonepro.h"
-
-#include "arm64_arch.h"
-#include "rk3399_iomuxc.h"
+#include <stdint.h>
 #include "hardware/rk3399_pinmux.h"
-#ifdef CONFIG_FS_PROCFS
-#  include <nuttx/fs/fs.h>
-#endif
 
 /****************************************************************************
- * Public Functions
+ * Public Function Prototypes
  ****************************************************************************/
 
 /****************************************************************************
- * Name: pinephonepro_bringup
+ * Name: rk3399_iomuxc_set_pin_config
  *
  * Description:
- *   Bring up board features
- *
+ *   Congigure the IOMUXC pin configuration.
+ *   First param is address
+ *   second is the mask and value to put into the register (no read then set)
+ *   third is config if pull up or pulldowns are configured
  ****************************************************************************/
 
-#define IOMUX_LED         IOMUXC_GRF_GPIO4D_IO00_GPIO, GPIO_PAD_CTRL
 
-int pinephonepro_bringup(void)
-{
-  int ret = OK;
 
-  rk3399_iomuxc_config(IOMUX_LED);
-#ifdef CONFIG_FS_PROCFS
-  /* Mount the procfs file system */
+void rk3399_iomuxc_config(uint32_t mux_register,
+                         uint32_t mux_mode,
+                         uint32_t config);
 
-  ret = nx_mount(NULL, "/proc", "procfs", 0, NULL);
-  if (ret < 0)
-    {
-      syslog(LOG_ERR, "ERROR: Failed to mount procfs at /proc: %d\n", ret);
-    }
-#endif
-
-  UNUSED(ret);
-  return OK;
-}
+#endif /* __ARCH_ARM_SRC_RK3399_RK3399_IOMUXC_H */
